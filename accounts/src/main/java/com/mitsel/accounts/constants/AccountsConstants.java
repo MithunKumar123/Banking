@@ -14,6 +14,9 @@ public class AccountsConstants {
     public static final String MESSAGE_201 = "Account Created Successfully";
     public static final String STATUS_500 = "500";
     public static final String MESSAGE_500 = "An Error occoured. Please try again or contact admin team";
+    public static final String STATUS_417 = "500";
+    public static final String MESSAGE_417_UPDATE = "Update operation failed. Please try again or contact admin team";
+    public static final String MESSAGE_417_DELETE = "Delete operation failed. Please try again or contact admin team";
 
 
 }

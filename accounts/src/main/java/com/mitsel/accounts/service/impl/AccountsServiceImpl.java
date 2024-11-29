@@ -1,10 +1,13 @@
 package com.mitsel.accounts.service.impl;
 
 import com.mitsel.accounts.constants.AccountsConstants;
+import com.mitsel.accounts.dto.AccountsDto;
 import com.mitsel.accounts.dto.CustomerDto;
 import com.mitsel.accounts.entity.Accounts;
 import com.mitsel.accounts.entity.Customer;
 import com.mitsel.accounts.exception.CustomerAlreadyExistException;
+import com.mitsel.accounts.exception.ResourceNotFoundException;
+import com.mitsel.accounts.mapper.AccountsMapper;
 import com.mitsel.accounts.mapper.CustomerMapper;
 import com.mitsel.accounts.repository.AccountsRepository;
 import com.mitsel.accounts.repository.CustomerRepository;
@@ -30,9 +33,9 @@ public class AccountsServiceImpl implements IAccountsService {
         if(existingCustomer.isPresent()){
             throw new CustomerAlreadyExistException("Mobile number is already exisiting");
         }
-        customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy("Anonoymys");
+
         Customer savedCustomer = customerRepository.save(customer);
+
         accountsRepository.save(createNewAccount(savedCustomer));
     }
 
@@ -49,9 +52,68 @@ public class AccountsServiceImpl implements IAccountsService {
         newAccount.setAccountNumber(randomAccountNumber);
         newAccount.setAccountType(AccountsConstants.SAVINGS);
         newAccount.setBranchAddress(AccountsConstants.ADDRESS);
-        newAccount.setCreatedBy("Ananymys");
-        newAccount.setCreatedAt(LocalDateTime.now());
         return newAccount;
     }
 
+    /**
+     *
+     * @param mobileNumber - Accepts the mobile number as an input to the query
+     * @return Accounts details based on the given mobile number
+     */
+    @Override
+    public CustomerDto fetchAccount(String mobileNumber) {
+        Customer customer = customerRepository
+                .findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
+
+        Accounts accounts = accountsRepository
+                .findByCustomerId(customer.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Account", "CustomerId", String.valueOf(customer.getCustomerId())));
+
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+        customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
+
+        return customerDto;
+    }
+
+    /**
+     * @param customerDto
+     * @return boolean indicating if the update of the account details is successful or not
+     */
+    @Override
+    public boolean updateAccount(CustomerDto customerDto) {
+        boolean isUpdated = false;
+        AccountsDto accountsDto = customerDto.getAccountsDto();
+        if(accountsDto != null){
+            Accounts accounts = accountsRepository
+                    .findById(accountsDto.getAccountNumber())
+                    .orElseThrow(() -> new ResourceNotFoundException("Account", "Account Number", String.valueOf(accountsDto.getAccountNumber())));
+
+            AccountsMapper.mapToAccounts(accountsDto, accounts);
+            accounts = accountsRepository.save(accounts);
+            Long customerId = accounts.getCustomerId();
+            Customer customer = customerRepository
+                    .findById(customerId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Customer", "Customer ID", customerId.toString()));
+            CustomerMapper.mapToCustomer(customerDto, customer);
+            customerRepository.save(customer);
+            isUpdated = true;
+        }
+        return isUpdated;
+    }
+
+    /**
+     * @param mobileNumber
+     * @return Boolean value to notify the that the account is deleted or not
+     */
+    @Override
+    public boolean deleteAccount(String mobileNumber) {
+        Customer customer = customerRepository
+                .findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber));
+
+        accountsRepository.deleteByCustomerId(customer.getCustomerId());
+        customerRepository.deleteById(customer.getCustomerId());
+        return true;
+    }
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "accounts")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,7 +15,6 @@ import lombok.Setter;
 public class Accounts extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_number")
     private Long accountNumber;
 
