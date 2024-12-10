@@ -1,0 +1,11 @@
+build:
+  version: "3.0"
+
+accounts:
+  message: "Welcome to the banking software. This is an Loans API"
+  contactDetails:
+    name: "Mithunkumar Selvaraj"
+    email: "mithun.selvaraj@gmail.com"
+  onCallSupport:
+    - 9148010606
+    - 9148010607

@@ -1,0 +1,14 @@
+server:
+  port: 8071
+
+spring:
+  application:
+    name: "configserver"
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: "file:///Users//mitsel01//Library//CloudStorage//OneDrive-Arm//Desktop//config"
+#          search-locations: "classpath:/config"

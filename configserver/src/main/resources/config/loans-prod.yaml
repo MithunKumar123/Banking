@@ -1,13 +1,8 @@
-spring:
-  config:
-    activate:
-      on-profile: "prod"
-
 build:
   version: "1.0"
 
 accounts:
-  message: "Welcome to the banking software. This is an Accounts PROD API"
+  message: "Welcome to the banking software. This is an Loans PROD API"
   contactDetails:
     name: "MM Company"
     email: "monisha.mithun@gmail.com"
