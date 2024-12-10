@@ -1,6 +1,7 @@
 package com.mitsel.accounts.controller;
 
 import com.mitsel.accounts.constants.AccountsConstants;
+import com.mitsel.accounts.dto.AccountsContactInfoDto;
 import com.mitsel.accounts.dto.CustomerDto;
 import com.mitsel.accounts.dto.ErrorResponseDto;
 import com.mitsel.accounts.dto.ResponseDto;
@@ -13,7 +14,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +29,24 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(value = "/api/accounts/v1", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
 @Validated
 public class AccountsControllerV1 {
 
-    private IAccountsService iAccountsService;
+    private final IAccountsService iAccountsService;
 
+    @Autowired
+    private Environment environment;
+
+    @Value("${build.version}")
+    private String buildVersion;
+
+    @Autowired
+    private AccountsContactInfoDto accountsContactInfoDto;
+
+    @Autowired
+    public AccountsControllerV1(IAccountsService iAccountsService) {
+        this.iAccountsService = iAccountsService;
+    }
 
     @Operation(
             summary = "Create account rest api",
@@ -159,5 +174,75 @@ public class AccountsControllerV1 {
                 .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
     }
 
+    @Operation(
+            summary = "Fetch account details Build information",
+            description = "Get Build information that is deployed into the accounts MS"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http Status OK"
+            )
+    })
+    @GetMapping("/buildVersion")
+    public ResponseEntity<String> getBuildInfo(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(buildVersion);
+    }
 
+    @Operation(
+            summary = "Java version the current service is using",
+            description = "Get Java version information that is used into the accounts MS"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http Status OK"
+            )
+    })
+    @GetMapping("/javaVersion")
+    public ResponseEntity<String> getJavaVersion(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @Operation(
+            summary = "Get Contact Info details",
+            description = "Get the contact info and use it when ever there is an issue"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http Status OK"
+            )
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDto> getContactInfo(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountsContactInfoDto);
+    }
 }

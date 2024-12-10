@@ -84,18 +84,13 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.4</version>
 				<configuration>
-					<image>
-						<name>mithunmoni/banking-loans:0.0.1</name>
-					</image>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<to>
+						<image>mithunmoni/banking-loans:0.0.2</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>

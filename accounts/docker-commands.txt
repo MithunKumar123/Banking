@@ -1,0 +1,40 @@
+docker
+    -compose
+        -- up
+        -- down
+        -- stop
+        -- start
+    - images
+    - image
+        -- inspect [image-id]
+        -- remove [image-id]
+        -- push [registry/image-name:tag]
+        -- pull [registry/image-name:tag]
+        -- prune
+    - build . -t [image-name]
+    - run -p [hostport]:[containerport] [image-name]
+    - ps
+    - ps -a
+    - rm [container-id]
+    - container
+        -- start [container-id]
+        -- pause [container-id]
+        -- unpause [container-id]
+        -- stop [container-id]
+        -- kill [container-id]
+        -- restart [container-id]
+        -- inspect [container-id]
+        -- logs [container-id]
+        -- logs -f [container-id]
+        -- prune
+        -- stats
+    - system
+        -- prune
+    - rmi [image-id]
+    - login -u [username]
+    - logout
+    - history [image-name]
+    - exec -it [container-id] sh
+
+
+

@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+
+build:
+  version: "2.0"
+
+accounts:
+  message: "Welcome to the banking software. This is an Loans QA API"
+  contactDetails:
+    name: "Monisha - QA Lead"
+    email: "monisha.mithun@gmail.com"
+  onCallSupport:
+    - 9148010606
+    - 9876543210

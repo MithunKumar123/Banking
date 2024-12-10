@@ -6,6 +6,13 @@ springdoc:
     path: /swagger-ui.html
 
 spring:
+  config:
+    import:
+      - "application_qa.yml"
+      - "application_prod.yml"
+  profiles:
+    active:
+      - "qa"
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
@@ -21,3 +28,15 @@ spring:
     show-sql: true
   application:
     name: accounts
+
+build:
+  version: "3.0"
+
+accounts:
+  message: "Welcome to the banking software. This is an Accounts API"
+  contactDetails:
+    name: "Mithunkumar Selvaraj"
+    email: "mithun.selvaraj@gmail.com"
+  onCallSupport:
+    - 9148010606
+    - 9148010607
