@@ -10,5 +10,5 @@ spring:
     config:
       server:
         native:
-          search-locations: "classpath:/config"
-
+          search-locations: "file:///Users//mitsel01//Library//CloudStorage//OneDrive-Arm//Desktop//config"
+#          search-locations: "classpath:/config"
