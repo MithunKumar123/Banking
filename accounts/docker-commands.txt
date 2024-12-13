@@ -38,3 +38,11 @@ docker
 
 
 
+Mysql details:
+    root_user: "root"
+    password: "Mithun@202511"
+    host="localhost",
+    database="Learning",
+    user="test_user",
+    password="Moni@202511",
+
