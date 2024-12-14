@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.mitsel</groupId>
-	<artifactId>configserver</artifactId>
+	<artifactId>eurekaserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>configserver</name>
-	<description>Config server for Banking application</description>
+	<name>eurekaserver</name>
+	<description>Service discovery agent</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -38,8 +38,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-config-server</artifactId>
+			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -61,18 +66,18 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.4.4</version>
 				<configuration>
 					<to>
-						<image>mithunmoni/banking-configserver:${docker-tag}</image>
+						<image>mithunmoni/banking-eurekaserver:${docker-tag}</image>
 					</to>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
