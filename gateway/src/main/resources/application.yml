@@ -40,4 +40,8 @@ info:
     description: "Banking Gateway application"
     version: "1.0.0"
 
-
+logging:
+  level:
+    com:
+      mitsel:
+        gateway: DEBUG
