@@ -6,6 +6,7 @@ import com.mitsel.accounts.dto.CustomerDto;
 import com.mitsel.accounts.dto.ErrorResponseDto;
 import com.mitsel.accounts.dto.ResponseDto;
 import com.mitsel.accounts.service.IAccountsService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -229,11 +230,18 @@ public class AccountsControllerV1 {
                     description = "Http Status OK"
             )
     })
+    @RateLimiter(name = "getJavaVersion", fallbackMethod = "getJavaVersionFallback")
     @GetMapping("/javaVersion")
     public ResponseEntity<String> getJavaVersion(){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
+    }
+
+    public ResponseEntity<String> getJavaVersionFallback(Throwable throwable){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("Java 17");
     }
 
     @Operation(
