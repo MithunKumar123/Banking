@@ -25,6 +25,9 @@ management:
     health:
       probes:
         enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 endpoints:
   shutdown:
@@ -71,3 +74,5 @@ logging:
     com:
       mitsel:
         loans: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name}, %X{trace_id}. %X{span_id}]"
