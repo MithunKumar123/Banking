@@ -10,12 +10,24 @@ management:
     web:
       exposure:
         include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+
   info:
     env:
       enabled: true
   endpoint:
     shutdown:
       enabled: true
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 endpoints:
   shutdown:
@@ -56,3 +68,11 @@ info:
     name: "Loans"
     description: "Banking loans application"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      mitsel:
+        loans: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name}, %X{trace_id}. %X{span_id}]"
