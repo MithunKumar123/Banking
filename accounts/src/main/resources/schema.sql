@@ -14,6 +14,7 @@ create table if not exists `accounts` (
     `customer_id` int not null,
     `account_type` varchar(100) not null,
     `branch_address` varchar(200) not null,
+    `communication_switch` BOOLEAN,
     `created_at` date not null,
     `created_by` varchar(20) not null,
     `updated_at` date default null,
